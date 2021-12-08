@@ -8,12 +8,11 @@ describe('TimeFramePickerComponent', () => {
 
   const sandbox = sinon.createSandbox();
 
-  let clock : sinon.SinonFakeTimers;
   let onChange : sinon.SinonSpy;
 
   beforeEach(() => {
     // today is October 15, 2021
-    clock = sandbox.useFakeTimers(new Date(2021, 9, 15));
+    sandbox.useFakeTimers(new Date(2021, 9, 15));
     onChange = sandbox.fake();
   });
 
