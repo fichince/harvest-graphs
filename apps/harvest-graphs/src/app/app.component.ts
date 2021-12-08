@@ -1,37 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TimeEntry } from './models/time-entry';
 import { ApiService } from './services/api.service';
-import { GraphConfig, GraphConfigService } from './services/graph-config.service';
+import { GraphConfigService } from './services/graph-config.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  stringifiedConfig : string;
-
-  private graphConfig : GraphConfig;
+  timeEntries : TimeEntry[] = [];
 
   constructor(
     private api : ApiService,
     private graphConfigService : GraphConfigService,
-  ) {
-    this.graphConfig = graphConfigService.getConfig();
-    this.stringifiedConfig = '';
-  }
+  ) { }
 
-  ngOnInit() {
-    /*
-    this.api.getTimeEntries().subscribe((time_entries : TimeEntry[]) => {
-      console.log('here', time_entries);
-    });
-    */
+  format() {
+    return JSON.stringify(this.timeEntries, null, 2);
   }
 
   handleConfigChange() {
-    this.graphConfig = this.graphConfigService.getConfig();
-    this.stringifiedConfig = JSON.stringify(this.graphConfig, null, 2);
+    const { start, duration } = this.graphConfigService.getConfig();
+
+    this.api.getTimeEntries(start, duration).subscribe((timeEntries) => {
+      this.timeEntries = timeEntries;
+    });
   }
 }
