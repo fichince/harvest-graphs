@@ -1,0 +1,13 @@
+<div class="flex flex-col items-center">
+  <div class="p-3">
+    <app-button-group 
+      [defaultValue]="'week'"
+      [options]="timeDurationOptions"
+      (onClick)="handleDuration($event)">
+    </app-button-group>
+  </div>
+  <div class="p-3">
+    <app-time-frame-picker [duration]="duration">
+    </app-time-frame-picker>
+  </div>
+</div>

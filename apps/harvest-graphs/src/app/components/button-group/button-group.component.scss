@@ -1,0 +1,24 @@
+@layer components {
+  .button {
+    @apply 
+      first:rounded-l-lg
+      last:rounded-r-lg
+      border-t border-b
+      first:border-l 
+      last:border-r 
+      border-primary
+      px-2 py-1 text-sm;
+  }
+
+  .button-default {
+    @apply 
+      text-primary bg-white 
+      hover:text-white hover:bg-primary-light
+      active:bg-primary;
+  }
+
+  .button-selected {
+    @apply
+      text-white bg-primary;
+  }
+}

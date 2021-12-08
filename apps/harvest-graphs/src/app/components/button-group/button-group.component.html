@@ -1,0 +1,7 @@
+<div class="divide-x divide-green-900">
+  <button *ngFor="let opt of options; index as i" 
+    (click)="handleClick(opt.value)"
+    [ngClass]="classes[i]">
+    {{opt.label}}
+  </button>
+</div>
