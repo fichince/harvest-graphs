@@ -48,13 +48,10 @@ export class ButtonGroupComponent implements OnInit {
         'button-selected': this.selected === opt.value
       };
     });
-
-    //console.log('updateClasses', JSON.stringify(this.classes, null, 2));
   }
 
   handleClick(s : string) {
     this.selected = s;
-    console.log('emitting', this.selected);
     this.onClick.emit(this.selected);
     this.updateClasses();
   }

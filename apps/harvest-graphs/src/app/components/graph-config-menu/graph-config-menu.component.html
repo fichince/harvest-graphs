@@ -7,7 +7,9 @@
     </app-button-group>
   </div>
   <div class="p-3">
-    <app-time-frame-picker [duration]="duration">
+    <app-time-frame-picker 
+      [duration]="duration"
+      (onChange)="handleTimeFrame($event)">
     </app-time-frame-picker>
   </div>
 </div>

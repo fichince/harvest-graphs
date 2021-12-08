@@ -28,12 +28,14 @@ export class GraphConfigMenuComponent implements OnInit {
   }
 
   handleDuration(duration : string) {
-
-    console.log("handleDuration", duration);
-
     this.duration = duration as Duration;
 
     this.graphConfigService.setDuration(duration);
+    this.onChange.emit();
+  }
+
+  handleTimeFrame(start : string) {
+    this.graphConfigService.setStart(start);
     this.onChange.emit();
   }
 }

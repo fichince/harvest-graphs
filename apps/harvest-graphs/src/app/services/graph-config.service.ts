@@ -4,13 +4,13 @@ export type Duration = 'week' | 'month' | 'year';
 
 export type GraphConfig = {
   duration?: Duration,
+  start?: string,
 };
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphConfigService {
-
   private config : GraphConfig;
 
   constructor() { 
@@ -27,8 +27,11 @@ export class GraphConfigService {
     }
   }
 
+  setStart(start: string) {
+    this.config.start = start;
+  }
+
   getConfig() {
-    console.log('getConfig', this.config);
     return this.config;
   }
 }
