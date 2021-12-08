@@ -16,9 +16,11 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ['active'],
+      backgroundColor: ['active', 'disabled'],
       borderRadius: ['first', 'last'],
       borderWidth: ['first', 'last'],
+      textColor: ['disabled'],
+      opacity: ['disabled'],
     },
   },
   plugins: [],
