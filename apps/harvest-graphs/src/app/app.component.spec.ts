@@ -1,7 +1,6 @@
 import { render, waitFor } from '@testing-library/angular';
 import * as sinon from 'sinon';
 import { expect } from '../test/test-utils';
-import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { GraphConfigMenuComponent } from './components/graph-config-menu/graph-config-menu.component';
@@ -18,7 +17,7 @@ describe('AppComponent', () => {
 
   beforeEach(() => {
     apiServiceStub = sandbox.createStubInstance(ApiService);
-    apiServiceStub.getTimeEntries.returns(of([]));
+    apiServiceStub.getTimeEntries.resolves([]);
 
     graphConfigServiceStub = sandbox.createStubInstance(GraphConfigService);
     graphConfigServiceStub.getConfig.returns({

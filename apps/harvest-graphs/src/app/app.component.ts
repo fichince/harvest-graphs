@@ -21,11 +21,9 @@ export class AppComponent {
     return JSON.stringify(this.timeEntries, null, 2);
   }
 
-  handleConfigChange() {
+  async handleConfigChange() {
     const { start, duration } = this.graphConfigService.getConfig();
 
-    this.api.getTimeEntries(start, duration).subscribe((timeEntries) => {
-      this.timeEntries = timeEntries;
-    });
+    this.timeEntries = await this.api.getTimeEntries(start, duration);
   }
 }
