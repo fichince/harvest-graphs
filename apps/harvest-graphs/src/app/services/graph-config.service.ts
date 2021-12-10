@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 export type Duration = 'week' | 'month' | 'year';
 
 export type GraphConfig = {
-  duration?: Duration,
-  start?: string,
+  duration: Duration,
+  start: string,
 };
 
 @Injectable({
@@ -14,8 +15,9 @@ export class GraphConfigService {
   private config : GraphConfig;
 
   constructor() { 
-    // TODO defaults?
     this.config = {
+      start: moment().startOf('week').format('YYYY-MM-DD'),
+      duration: 'week',
     };
   }
 

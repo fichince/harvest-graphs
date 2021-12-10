@@ -52,7 +52,7 @@ describe('AppComponent', () => {
     fixture.componentInstance.handleConfigChange();
 
     await waitFor(() => {
-      expect(apiServiceStub.getTimeEntries).to.have.been.calledWith('2021-10-01', 'month')
+      expect(apiServiceStub.getTimeEntries).to.have.been.calledWith('2021-10-01', '2021-10-31')
     });
   });
 });
