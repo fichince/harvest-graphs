@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, expand, lastValueFrom, map, reduce } from 'rxjs';
+import { EMPTY, expand, lastValueFrom, map, Observable, reduce } from 'rxjs';
 import { TimeEntryResponse } from '../models/paginated-response';
+import * as qs from 'query-string';
 
 import { TimeEntry } from '../models/time-entry';
 import { Duration } from './graph-config.service';
@@ -13,17 +14,30 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
+  private doGet<T>(url : string, params? : any) : Observable<T> {
+    const reqUrl = qs.stringifyUrl({
+      url,
+      query: params,
+    }, {
+      skipNull: true
+    });
+
+    return this.http.get<T>(reqUrl, { observe: 'response', responseType: 'json' }).pipe(
+      map((response) => response.body || {} as T)
+    );
+  }
+
   // TODO:
-  // - handle input parameters
   // - handle throttling (have to use get(url, { observe: 'response', responseType: 'json' }))
 
-  getTimeEntries(start? : string, duration? : Duration) : Promise<TimeEntry[]> {
+  getTimeEntries(from? : string, to? : string) : Promise<TimeEntry[]> {
     const url = '/v2/time_entries';
+    const params = { from, to };
 
-    const results = this.http.get<TimeEntryResponse>(url).pipe(
+    const results = this.doGet<TimeEntryResponse>(url, params).pipe(
       expand((response) => {
         if (response.next_page) {
-          return this.http.get<TimeEntryResponse>(`${url}?page=${response.next_page}`);
+          return this.doGet<TimeEntryResponse>(url, { ...params, page: response.next_page });
         } else {
           return EMPTY;
         }
@@ -31,7 +45,6 @@ export class ApiService {
       map((response) => response.time_entries),
       reduce((acc, time_entries) => acc.concat(time_entries), new Array<TimeEntry>())
     );
-
 
     return lastValueFrom(results);
   };
