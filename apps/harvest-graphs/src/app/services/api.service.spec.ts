@@ -29,10 +29,6 @@ describe('ApiService', () => {
 
   beforeEach(() => {
     httpClientMock = sandbox.createStubInstance(HttpClient);
-
-    // in order to simulate rate-limiting, we'll have to use an option
-    // here, e.g. withArgs(url, { observe: 'response', responseType: 'json' })
-
   });
 
   afterEach(() => {
