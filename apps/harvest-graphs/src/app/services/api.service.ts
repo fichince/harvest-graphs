@@ -1,11 +1,10 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, expand, lastValueFrom, map, Observable, reduce } from 'rxjs';
+import { delayWhen, EMPTY, expand, lastValueFrom, map, Observable, reduce, retryWhen, tap, timer } from 'rxjs';
 import { TimeEntryResponse } from '../models/paginated-response';
 import * as qs from 'query-string';
 
 import { TimeEntry } from '../models/time-entry';
-import { Duration } from './graph-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +22,20 @@ export class ApiService {
     });
 
     return this.http.get<T>(reqUrl, { observe: 'response', responseType: 'json' }).pipe(
+      map((response) => {
+        if (response.status === 429) throw response;
+        return response;
+      }),
+      retryWhen((errors) => {
+        return errors.pipe(
+          tap((error) => console.log('Got throttled', error)),
+          delayWhen((error) => {
+            const retryAfter = parseInt(error.headers.get('Retry-After') || '5');
+            return timer(retryAfter * 1000);
+          }),
+          // TODO actually make the retry here
+        );
+      }),
       map((response) => response.body || {} as T)
     );
   }
