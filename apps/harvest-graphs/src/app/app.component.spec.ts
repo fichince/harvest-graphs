@@ -8,6 +8,7 @@ import { ApiService } from './services/api.service';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { TimeFramePickerComponent } from './components/time-frame-picker/time-frame-picker.component';
 import { GraphConfigService } from './services/graph-config.service';
+import { GraphComponent } from './components/graph/graph.component';
 
 describe('AppComponent', () => {
 
@@ -36,6 +37,7 @@ describe('AppComponent', () => {
         GraphConfigMenuComponent,
         ButtonGroupComponent,
         TimeFramePickerComponent,
+        GraphComponent,
       ],
       providers: [
         {

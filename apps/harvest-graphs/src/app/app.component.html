@@ -1,8 +1,7 @@
 <div class="flex h-screen">
   <div class="bg-gray-100 w-3/4">
-    <pre class="text-xs">
-    {{format()}}
-    </pre>
+    <app-graph [timeEntries]="timeEntries">
+    </app-graph>
   </div>
   <div class="bg-gray-200 w-1/4">
     <app-graph-config-menu

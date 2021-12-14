@@ -24,6 +24,9 @@ export class AppComponent {
   }
 
   async handleConfigChange() {
+    // TODO debounce this?
+    // it currently makes two requests when the time duration changes because 
+    // it changes the time frame as well
     const { start, duration } = this.graphConfigService.getConfig();
     const { from, to } = this.timeConversionService.convertToTimestamps(start, duration);
 
