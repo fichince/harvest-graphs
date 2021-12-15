@@ -67,7 +67,7 @@ describe('GraphService', () => {
 
     console.log('timeEntries', JSON.stringify(timeEntries, null, 2));
 
-    const result = service.toGraphOpts(timeEntries);
+    const result = service.toGraphOpts(timeEntries, { duration: 'week', start: '2021-12-05' });
     console.log('result', JSON.stringify(result, null, 2));
 
     expect(result.series).to.deep.equal([

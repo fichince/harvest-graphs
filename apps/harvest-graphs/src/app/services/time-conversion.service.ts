@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Duration } from './graph-config.service';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 export type Timestamps = {
   from: string,
@@ -16,7 +16,7 @@ export class TimeConversionService {
 
   public convertToTimestamps(start: string, duration: Duration) : Timestamps {
 
-    const from = moment(start).startOf(duration);
+    const from = dayjs(start).startOf(duration);
     const to = from.clone().endOf(duration);
 
     return { 

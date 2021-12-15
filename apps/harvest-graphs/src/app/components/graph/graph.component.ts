@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TimeEntry } from '../../models/time-entry';
 import { EChartsOption } from 'echarts';
 import { GraphService } from '../../services/graph.service';
+import { GraphConfigService } from '../../services/graph-config.service';
 
 @Component({
   selector: 'app-graph',
@@ -19,14 +20,16 @@ export class GraphComponent implements OnInit, OnChanges {
     renderer: 'svg'
   };
 
-  constructor(private graphService : GraphService) { }
+  constructor(
+    private graphService : GraphService,
+    private graphConfigService : GraphConfigService,
+  ) { }
 
   ngOnInit(): void {
   }
 
   ngOnChanges() : void {
-    // TODO convert timeEntries to graphOpts
-    this.graphOpts = this.graphService.toGraphOpts(this.timeEntries);
+    this.graphOpts = this.graphService.toGraphOpts(this.timeEntries, this.graphConfigService.getConfig());
   }
 
 }

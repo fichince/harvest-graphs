@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 export type Duration = 'week' | 'month' | 'year';
 
@@ -16,7 +16,7 @@ export class GraphConfigService {
 
   constructor() { 
     this.config = {
-      start: moment().startOf('week').format('YYYY-MM-DD'),
+      start: dayjs().startOf('week').format('YYYY-MM-DD'),
       duration: 'week',
     };
   }

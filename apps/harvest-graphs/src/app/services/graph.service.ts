@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { EChartsOption } from 'echarts';
 import { TimeEntry } from '../models/time-entry';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
+import { Duration, GraphConfig } from './graph-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,15 +33,57 @@ export class GraphService {
 
   constructor() { }
 
-  public toGraphOpts(timeEntries : TimeEntry[]) : EChartsOption {
+  private getXAxis(config : GraphConfig) : string[] {
 
-    const xAxis = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
+    const { duration, start } = config;
+
+    const startDate = dayjs(start).startOf(duration);
+    const endDate = dayjs(start).endOf(duration);
+
+    switch(duration) {
+      case 'week':
+      case 'month': {
+        const items = [];
+        let d = startDate.clone();
+        while (d.isBefore(endDate, 'day') || d.isSame(endDate, 'day')) {
+          items.push(d.format('ddd MMM D'));
+          d = d.add(1, 'day');
+        }
+        return items;
+      }
+      case 'year': {
+        return _.map(_.range(0, 12), (month) => {
+          const d = dayjs().year(startDate.year()).month(month);
+          console.log('month', month, d);
+          return d.format('MMM YYYY');
+        });
+      }
+    }
+  }
+
+  private groupTimeEntriesByTime(date : dayjs.Dayjs, config : GraphConfig) : number {
+    switch (config.duration) {
+      case 'week':
+        // day of the week
+        return date.day();
+      case 'month':
+        // day of the month
+        return date.date();
+      case 'year':
+        // month of the year
+        return date.month();
+
+    }
+  }
+
+  public toGraphOpts(timeEntries : TimeEntry[], config : GraphConfig) : EChartsOption {
+
+    const xAxis = this.getXAxis(config);
 
     const sums = _.chain(timeEntries)
-      .groupBy((t) => moment(t.spent_date).day())
-      .values()
-      .map((entriesPerDay) => {
-        return _.chain(entriesPerDay)
+      .groupBy((t) => this.groupTimeEntriesByTime(dayjs(t.spent_date), config))
+      .mapValues((entriesInTimePeriod) => {
+        return _.chain(entriesInTimePeriod)
           .groupBy((t) => t.project?.id)
           .mapValues((entriesPerProject) => {
             return _.reduce(entriesPerProject, (acc, t) => acc + (t.hours || 0), 0);

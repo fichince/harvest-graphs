@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Duration } from '../../services/graph-config.service';
-import { Moment } from 'moment';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import * as _ from 'lodash';
 
 @Component({
@@ -20,10 +19,8 @@ export class TimeFramePickerComponent implements OnChanges {
 
   private distance : number = 0;
 
-  private init : Moment = moment();
-  private current : Moment = moment();
-
-  //private end : Moment = moment();
+  private init : dayjs.Dayjs = dayjs();
+  private current : dayjs.Dayjs = dayjs();
 
   constructor() { }
 
