@@ -1,21 +1,21 @@
 export interface TimeEntry {
   id : number,
-  spent_date : string,
-  hours : number,
-  billable : boolean,
+  spent_date? : string,
+  hours? : number,
+  billable? : boolean,
   user? : {
     id : number,
     name : string,
   },
-  client : {
+  client? : {
     id : number,
     name: string,
   },
-  project : {
+  project? : {
     id : number,
     name: string,
   },
-  task : {
+  task? : {
     id : number,
     name: string,
   },

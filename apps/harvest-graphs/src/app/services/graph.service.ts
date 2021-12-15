@@ -41,9 +41,9 @@ export class GraphService {
       .values()
       .map((entriesPerDay) => {
         return _.chain(entriesPerDay)
-          .groupBy((t) => t.project.id)
+          .groupBy((t) => t.project?.id)
           .mapValues((entriesPerProject) => {
-            return _.reduce(entriesPerProject, (acc, t) => acc + t.hours, 0);
+            return _.reduce(entriesPerProject, (acc, t) => acc + (t.hours || 0), 0);
           }).value()
       })
       .value();
